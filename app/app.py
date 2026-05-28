@@ -21,7 +21,7 @@ ECB_MID     = "#336699"
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv('../data/European_Bank.csv')
+    df = pd.read_csv('data/European_Bank.csv')
     df.drop(columns=['Surname', 'CustomerId', 'Year'], inplace=True)
     df['AgeGroup'] = pd.cut(df['Age'],
         bins=[0,29,45,60,120],
