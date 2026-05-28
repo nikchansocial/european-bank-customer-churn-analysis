@@ -156,3 +156,9 @@ streamlit run app/app.py
 Nikhil Chandrakar
 
 Finance & Analytics Enthusiast
+
+LinkedIn:
+https://linkedin.com/in/nikchansocial
+
+GitHub:
+https://github.com/nikchansocial
