@@ -63,6 +63,12 @@ st.markdown("""
     border-right:1px solid #E2E8F0;
 }
 
+[data-testid="stExpander"]{
+    border:none !important;
+    box-shadow:none !important;
+    background:transparent !important;
+}
+
 /* Metric Cards */
 
 [data-testid="metric-container"]{
@@ -442,7 +448,7 @@ gauge = go.Figure(
         }
     )
 )
-gauge.update_layout(height=250, margin=dict(l=20,r=20,t=40,b=20))
+gauge.update_layout(height=350, margin=dict(l=20,r=20,t=40,b=20), font=dict(size=18))
 st.plotly_chart(gauge, width="stretch", key="risk_gauge")
 
 r1,r2,r3,r4 = st.columns(4)
@@ -462,20 +468,20 @@ st.markdown(f"""
 🤖 AI Executive Briefing
 </h3>
 
-Risk Level: {risk_label}
+<h4>Risk Level</h4>
+<b>{risk_label}</b><br><br>
 
-Primary Risk Driver:
-{top_country} ({top_country_rate:.1f}%)
+<h4>Primary Driver</h4>
+{top_country} ({top_country_rate:.1f}%)<br><br>
 
-Secondary Risk Driver:
-{top_age} ({top_age_rate:.1f}%)
+<h4>Secondary Driver</h4>
+{top_age} ({top_age_rate:.1f}%)<br><br>
 
-Financial Exposure:
-£{balance_risk:.1f}M
+<h4>Financial Exposure</h4>
+£{balance_risk:.1f}M<br><br>
 
-Recommended Action:
-Protect high-value customers in
-{top_country} immediately.
+<h4>Recommended Action</h4>
+Protect high-value customers in {top_country} immediately.
 
 </div>
 """, unsafe_allow_html=True)
@@ -483,9 +489,9 @@ Protect high-value customers in
 st.markdown("### Strategic Findings")
 
 f1,f2,f3 = st.columns(3)
-f1.metric("Highest Risk Geography", top_country, f"{top_country_rate:.1f}%")
-f2.metric("Highest Risk Segment", str(top_age), f"{top_age_rate:.1f}%")
-f3.metric("Financial Exposure", f"£{balance_risk:.1f}M")
+f1.metric("🌍 Highest Risk Geography", top_country, f"{top_country_rate:.1f}%")
+f2.metric("👥 Highest Risk Segment", str(top_age), f"{top_age_rate:.1f}%")
+f3.metric("💰 Financial Exposure", f"£{balance_risk:.1f}M")
 
 # ==================================================
 # TABS
@@ -547,7 +553,7 @@ with tab1:
         observed=True
     ) * 100
 
-    fig_hm, ax = plt.subplots(figsize=(10,4))
+    fig_hm, ax = plt.subplots(figsize=(12,5))
 
     sns.heatmap(
         pivot,
@@ -568,9 +574,9 @@ with tab1:
 
     st.divider()
 
-    st.info(
-        f"""
-        Executive Summary
+    st.markdown(f"""
+<div style="background:#EFF6FF;padding:24px;border-radius:16px;border:1px solid #BFDBFE;">
+<h4 style="margin-top:0;">Executive Summary</h4>
 
         • Overall churn currently stands at {churn_rate:.1f}%
 
@@ -578,9 +584,7 @@ with tab1:
 
         • High-value customer churn rate is {high_value_churn:.1f}%
 
-        • Inactive customers remain significantly more vulnerable than active members.
-        """
-    )
+        • Inactive customers remain significantly more vulnerable than active members.</div>""", unsafe_allow_html=True)
 
 # ==================================================
 # TAB 2 — CUSTOMER INTELLIGENCE
@@ -876,7 +880,7 @@ with tab3:
         ) * 100
     )
 
-    fig_geo, ax = plt.subplots(figsize=(10,4))
+    fig_geo, ax = plt.subplots(figsize=(12,5))
 
     sns.heatmap(
         geo_heat,
