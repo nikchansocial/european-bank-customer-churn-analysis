@@ -371,7 +371,7 @@ st.write("")
 # KPI ROW
 # ==================================================
 
-k1,k2,k3,k4 = st.columns(4)
+k1,k2,k3,k4,k5 = st.columns(5)
 
 k1.metric(
     "Churn Rate",
@@ -393,7 +393,7 @@ k4.metric(
     f"{inactive_churn:.1f}%"
 )
 
-st.metric(
+k5.metric(
     "Customers Analysed",
     f"{len(filtered):,}"
 )
@@ -419,6 +419,18 @@ is estimated at approximately £{balance_risk:.1f}M.
 </div>
 """, unsafe_allow_html=True)
 
+st.warning(
+f"""
+### Top Strategic Findings
+
+1. Germany remains the highest-risk geography.
+
+2. Customers aged 46–60 exhibit the highest churn propensity.
+
+3. Approximately £{balance_risk:.1f}M of high-value deposits remain vulnerable.
+"""
+)
+
 # ==================================================
 # TABS
 # ==================================================
@@ -438,22 +450,19 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 ])
 
 PLOT_LAYOUT = dict(
-
     paper_bgcolor="white",
-
     plot_bgcolor="white",
-
     font=dict(
         color=TEXT
     ),
-
     margin=dict(
         l=20,
         r=20,
         t=50,
         b=20
     )
-    
+)
+
 # ==================================================
 # TAB 1 — EXECUTIVE OVERVIEW
 # ==================================================
@@ -1344,7 +1353,4 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
-)
-
-
 )
