@@ -396,40 +396,54 @@ Executive Analytics for Customer Churn Risk & Retention Strategy
 
 st.write("")
 
+
 # ==================================================
-# KPI ROW
+# HERO KPI
 # ==================================================
 
-k1,k2,k3,k4,k5 = st.columns(5)
+st.markdown(f"""
+<div style="
+background:linear-gradient(135deg,#0F172A,#1E293B);
+padding:28px;
+border-radius:18px;
+margin-bottom:20px;
+color:white;
+">
+<div style="font-size:14px;opacity:0.8;">FINANCIAL EXPOSURE</div>
+<div style="font-size:52px;font-weight:700;margin-top:5px;">
+£{balance_risk:.1f}M
+</div>
+<div style="font-size:16px;opacity:0.85;">Balance At Risk</div>
+</div>
+""", unsafe_allow_html=True)
 
-k1.metric(
-    "Churn Rate",
-    f"{churn_rate:.1f}%"
+k1,k2,k3,k4 = st.columns(4)
+k1.metric("Churn Rate", f"{churn_rate:.1f}%")
+k2.metric("High Value Churn", f"{high_value_churn:.1f}%")
+k3.metric("Inactive Churn", f"{inactive_churn:.1f}%")
+k4.metric("Customers Analysed", f"{len(filtered):,}")
+
+
+st.markdown("### 🎯 Portfolio Health Score")
+
+gauge = go.Figure(
+    go.Indicator(
+        mode="gauge+number",
+        value=risk_score,
+        title={"text":"Portfolio Health"},
+        gauge={
+            "axis":{"range":[0,100]},
+            "bar":{"color":"#2563EB"},
+            "steps":[
+                {"range":[0,50],"color":"#DCFCE7"},
+                {"range":[50,75],"color":"#FEF3C7"},
+                {"range":[75,100],"color":"#FEE2E2"}
+            ]
+        }
+    )
 )
-
-k2.metric(
-    "Balance At Risk",
-    f"£{balance_risk:.1f}M"
-)
-
-k3.metric(
-    "High Value Churn",
-    f"{high_value_churn:.1f}%"
-)
-
-k4.metric(
-    "Inactive Churn",
-    f"{inactive_churn:.1f}%"
-)
-
-k5.metric(
-    "Customers Analysed",
-    f"{len(filtered):,}"
-)
-
-st.markdown("### 🎯 Portfolio Risk Score")
-st.progress(risk_score/100)
-st.info(f"Risk Score: {risk_score}/100 | Risk Level: {risk_label}")
+gauge.update_layout(height=250, margin=dict(l=20,r=20,t=40,b=20))
+st.plotly_chart(gauge, width="stretch", key="risk_gauge")
 
 r1,r2,r3,r4 = st.columns(4)
 r1.metric("Highest Risk Country", top_country, f"{top_country_rate:.1f}%")
@@ -448,27 +462,30 @@ st.markdown(f"""
 🤖 AI Executive Briefing
 </h3>
 
-Germany and customers aged 46–60 continue
-to represent the most vulnerable retention
-segment.
+Risk Level: {risk_label}
 
-Current exposure among high-value customers
-is estimated at approximately £{balance_risk:.1f}M.
+Primary Risk Driver:
+{top_country} ({top_country_rate:.1f}%)
+
+Secondary Risk Driver:
+{top_age} ({top_age_rate:.1f}%)
+
+Financial Exposure:
+£{balance_risk:.1f}M
+
+Recommended Action:
+Protect high-value customers in
+{top_country} immediately.
 
 </div>
 """, unsafe_allow_html=True)
 
-st.warning(
-f"""
-### Top Strategic Findings
+st.markdown("### Strategic Findings")
 
-1. Germany remains the highest-risk geography.
-
-2. Customers aged 46–60 exhibit the highest churn propensity.
-
-3. Approximately £{balance_risk:.1f}M of high-value deposits remain vulnerable.
-"""
-)
+f1,f2,f3 = st.columns(3)
+f1.metric("Highest Risk Geography", top_country, f"{top_country_rate:.1f}%")
+f2.metric("Highest Risk Segment", str(top_age), f"{top_age_rate:.1f}%")
+f3.metric("Financial Exposure", f"£{balance_risk:.1f}M")
 
 # ==================================================
 # TABS
@@ -1327,22 +1344,21 @@ Immediate Actions This Week
 st.markdown("---")
 
 st.markdown(
-    """
-    <div style="text-align:center;">
-
-    <h4 style="margin-bottom:5px;color:#0F172A;">
-    ECB Customer Intelligence Platform
-    </h4>
-
-    <p style="color:#64748B;">
-    Executive Retention Analytics Dashboard
-    </p>
-
-    <p style="color:#94A3B8;font-size:12px;">
-    Built with Streamlit • Plotly • Data Analytics
-    </p>
-
-    </div>
-    """,
-    unsafe_allow_html=True
+f"""
+<div style="text-align:center;">
+<h4 style="margin-bottom:5px;color:#0F172A;">
+ECB Customer Intelligence Platform
+</h4>
+<p style="color:#64748B;">
+Executive Retention Analytics Dashboard
+</p>
+<p style="color:#94A3B8;font-size:13px;">
+Developed by Nikhil Chandrakar
+</p>
+<p style="color:#94A3B8;font-size:12px;">
+PGDM Finance & Business Analytics
+</p>
+</div>
+""",
+unsafe_allow_html=True
 )
